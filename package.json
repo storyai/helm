@@ -3,10 +3,10 @@
   "version": "1.7.0",
   "main": "index.js",
   "license": "MIT",
-  "homepage": "https://github.com/deliverybot/helm",
+  "homepage": "https://github.com/storyai/helm",
   "author": {
-    "name": "deliverybot",
-    "url": "https://github.com/deliverybot"
+    "name": "storyai",
+    "url": "https://github.com/storyai"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",

@@ -132,17 +132,13 @@ function renderFiles(files, data) {
 }
 
 /**
- * Makes a delete command for compatibility between helm 2 and 3.
+ * Makes a delete command for helm3
  *
- * @param {string} helm
  * @param {string} namespace
  * @param {string} release
  */
-function deleteCmd(helm, namespace, release) {
-  if (helm === "helm3") {
+function deleteCmd(namespace, release) {
     return ["delete", "-n", namespace, release];
-  }
-  return ["delete", "--purge", release];
 }
 
 /**
@@ -152,6 +148,10 @@ async function run() {
   try {
     const context = github.context;
     await status("pending");
+
+    // Forked from the deliverybot/helm action
+    // we only need helm3.
+    const helm = "helm3"
 
     const track = getInput("track") || "stable";
     const appName = getInput("release", required);
@@ -164,7 +164,6 @@ async function run() {
     const version = getInput("version");
     const valueFiles = getValueFiles(getInput("value_files"));
     const removeCanary = getInput("remove_canary");
-    const helm = getInput("helm") || "helm";
     const timeout = getInput("timeout");
     const repository = getInput("repository");
     const dryRun = core.getInput("dry-run");
@@ -247,14 +246,14 @@ async function run() {
     // Remove the canary deployment before continuing.
     if (removeCanary) {
       core.debug(`removing canary ${appName}-canary`);
-      await exec.exec(helm, deleteCmd(helm, namespace, `${appName}-canary`), {
+      await exec.exec(helm, deleteCmd(namespace, `${appName}-canary`), {
         ignoreReturnCode: true
       });
     }
 
     // Actually execute the deployment here.
     if (task === "remove") {
-      await exec.exec(helm, deleteCmd(helm, namespace, release), {
+      await exec.exec(helm, deleteCmd(namespace, release), {
         ignoreReturnCode: true
       });
     } else {
