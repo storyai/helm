@@ -167,6 +167,7 @@ async function run() {
     const timeout = getInput("timeout");
     const repository = getInput("repository");
     const dryRun = core.getInput("dry-run");
+    const createNamespace = core.getInput("create-namespace");
     const secrets = getSecrets(core.getInput("secrets"));
     const atomic = getInput("atomic") || true;
 
@@ -178,6 +179,7 @@ async function run() {
     core.debug(`param: chart_version = "${chartVersion}"`);
     core.debug(`param: values = "${values}"`);
     core.debug(`param: dryRun = "${dryRun}"`);
+    core.debug(`param: createNamespace = "${createNamespace}"`);
     core.debug(`param: task = "${task}"`);
     core.debug(`param: version = "${version}"`);
     core.debug(`param: secrets = "${JSON.stringify(secrets)}"`);
@@ -208,6 +210,7 @@ async function run() {
     }
 
     if (dryRun) args.push("--dry-run");
+    if (createNamespace) args.push("--create-namespace");
     if (appName) args.push(`--set=app.name=${appName}`);
     if (version) args.push(`--set=app.version=${version}`);
     if (chartVersion) args.push(`--version=${chartVersion}`);

@@ -26,6 +26,9 @@ inputs:
   dry-run:
     description: Simulate an upgrade.
     required: false
+  create-namespace:
+    description: Create namespace if it doesn't exist. Defaults to false.
+    required: false
   atomic:
     description: If true, upgrade process rolls back changes made in case of failed upgrade. Defaults to true.
     required: false
