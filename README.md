@@ -25,6 +25,7 @@ payload if the action was triggered by a deployment.
 - `task`: Task name. If the task is "remove" it will remove the configured helm
   release.
 - `dry-run`: Helm dry-run option.
+- `create-namespace`: Helm create-namespace option.
 - `token`: Github repository token. If included and the event is a deployment
   then the deployment_status event will be fired.
 - `value-files`: Additional value files to apply to the helm chart. Expects a
@@ -80,7 +81,7 @@ jobs:
           name: foobar
         value-files: >-
         [
-          "values.yaml", 
+          "values.yaml",
           "values.production.yaml"
         ]
       env:
@@ -102,26 +103,26 @@ resources to pick up the canary pods and route traffic to them.
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy
-on: ['deployment']
+on: ["deployment"]
 
 jobs:
   deployment:
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: 'Deploy'
-      uses: 'deliverybot/helm@v1'
-      with:
-        release: 'nginx'
-        track: canary
-        namespace: 'default'
-        chart: 'app'
-        token: '${{ github.token }}'
-        values: |
-          name: foobar
-      env:
-        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+      - name: "Deploy"
+        uses: "deliverybot/helm@v1"
+        with:
+          release: "nginx"
+          track: canary
+          namespace: "default"
+          chart: "app"
+          token: "${{ github.token }}"
+          values: |
+            name: foobar
+        env:
+          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG }}"
 ```
 
 ## Example pr cleanup
@@ -140,19 +141,19 @@ on:
 
 jobs:
   deployment:
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
     steps:
-    - name: 'Deploy'
-      uses: 'deliverybot/helm@v1'
-      with:
-        # Task remove means to remove the helm release.
-        task: 'remove'
-        release: 'review-myapp-${{ github.event.pull_request.number }}'
-        version: '${{ github.sha }}'
-        track: 'stable'
-        chart: 'app'
-        namespace: 'example-helm'
-        token: '${{ github.token }}'
-      env:
-        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+      - name: "Deploy"
+        uses: "deliverybot/helm@v1"
+        with:
+          # Task remove means to remove the helm release.
+          task: "remove"
+          release: "review-myapp-${{ github.event.pull_request.number }}"
+          version: "${{ github.sha }}"
+          track: "stable"
+          chart: "app"
+          namespace: "example-helm"
+          token: "${{ github.token }}"
+        env:
+          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG }}"
 ```
