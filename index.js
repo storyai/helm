@@ -170,6 +170,7 @@ async function run() {
     const createNamespace = core.getInput("create-namespace");
     const secrets = getSecrets(core.getInput("secrets"));
     const atomic = getInput("atomic") || true;
+    const debug = getInput("debug")
 
     core.debug(`param: track = "${track}"`);
     core.debug(`param: release = "${release}"`);
@@ -209,6 +210,7 @@ async function run() {
       process.env.HELM_HOME = "/root/.helm/"
     }
 
+    if (debug === "true") args.push("--debug")
     if (dryRun) args.push("--dry-run");
     if (createNamespace) args.push("--create-namespace");
     if (appName) args.push(`--set=app.name=${appName}`);

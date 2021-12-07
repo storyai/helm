@@ -50,6 +50,9 @@ inputs:
   version:
     description: Version of the app, usually commit sha works here.
     required: false
+  debug:
+    description: Run the helm command with the debug flag. Defaults to false.
+    required: false
 runs:
   using: docker
   image: Dockerfile
